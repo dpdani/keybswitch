@@ -1,0 +1,46 @@
+#!/bin/bash
+
+
+function set_layout {
+    # xkb is used for keyboard layout setting
+    setxkbmap $1
+}
+
+
+function notify {
+    # dunstify is used as notification dispatcher (assumes you use
+    # the dunst notification daemon (may not be the case))
+    dunstify -a keybswitch -r 2595 -u low "" "    $1"
+    # if you cannot see the character, it's a keyboard in fontawesome
+}
+
+
+function query {
+    echo `setxkbmap -query \
+          | sed -n "/layout/p" \
+          | tail -c 3 \
+          | head -c 2`
+}
+
+
+function what_layout {
+    # $1 is the current keyboard layout
+    # now, decide what layout you wanna switch to
+    if [[ $1 = 'us' ]]; then
+        echo 'it'
+    else
+        echo 'us'
+    fi
+}
+
+
+function main {
+    res=`query`
+    new_layout=`what_layout $res`
+    set_layout $new_layout
+    notify $new_layout
+}
+
+
+main
+
