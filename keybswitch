@@ -26,6 +26,9 @@ function query {
 function what_layout {
     # $1 is the current keyboard layout
     # now, decide what layout you wanna switch to
+    # whatever logic you implement, remember
+    # to `echo` your decision: result is retrieved
+    # from stdout
     if [[ $1 = 'us' ]]; then
         echo 'it'
     else
@@ -38,7 +41,8 @@ function main {
     res=`query`
     new_layout=`what_layout $res`
     set_layout $new_layout
-    notify $new_layout
+    notify $new_layout  # if you do not wish to dispatch a notification
+                        # comment this line
 }
 
 
